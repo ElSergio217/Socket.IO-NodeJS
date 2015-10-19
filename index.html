@@ -67,11 +67,6 @@
 
     <!-- Latest compiled and minified CSS -->
 <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/css/bootstrap.min.css">
-
-
-<!-- Latest compiled and minified JavaScript -->
-<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/js/bootstrap.min.js"></script>
-
 </head>
 <body>
 	<!--<h3 id="chat"></h3>
@@ -83,7 +78,6 @@
     <div class="panel panel-primary" style="height:90%">
         <div class="panel-heading">
             <span class="glyphicon glyphicon-comment"></span> Chat
-            <input id="name" type="text" class="form-control input-sm pull-right" style="width:25%" placeholder="Enter Username" />
         </div>
         <div id="chat" class="panel-body"></div>
     </div>
@@ -101,6 +95,25 @@
       </div>
   </div>
 </div>
+
+    <div id="myModal" class="modal fade" role="dialog">
+        <div class="modal-dialog" style="width:95%">
+
+            <!-- Modal content-->
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h4 class="modal-title">Log in</h4>
+                </div>
+                <div class="modal-body">
+                   <center><input id="name" type="text" class="form-control input-sm" style="width:50%" placeholder="Enter Username" /></center>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-default" data-dismiss="modal">Enter</button>
+                </div>
+            </div>
+
+        </div>
+    </div>
 
 	<script src="http://code.jquery.com/jquery-latest.min.js"></script>
 	<script src="/socket.io/socket.io.js"></script>
@@ -122,9 +135,15 @@
 				$chat.append(data + "<h1/>");
                    $("#chat").scrollTop($("#chat")[0].scrollHeight);
 			});
- 
 });
 	</script>
-
+    <!-- Latest compiled and minified JavaScript -->
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/js/bootstrap.min.js"></script>
+    <script type="text/javascript">
+    $(window).load(function(){
+        $('#myModal').modal('show');
+    });
+    </script>
+   
 </body>
 </html>
