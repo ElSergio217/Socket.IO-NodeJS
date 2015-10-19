@@ -83,6 +83,7 @@
     <div class="panel panel-primary" style="height:90%">
         <div class="panel-heading">
             <span class="glyphicon glyphicon-comment"></span> Chat
+            <input id="name" type="text" class="form-control input-sm pull-right" style="width:25%" placeholder="Enter Username" />
         </div>
         <div id="chat" class="panel-body"></div>
     </div>
@@ -109,10 +110,11 @@
 			var $messageForm = $('#send-message');
 			var $messageBox = $('#message');
 			var $chat = $('#chat');
+			var $name = $('#name');
 			
 			$messageForm.submit(function(e){
 				e.preventDefault();
-				socket.emit('send message', $messageBox.val());
+				socket.emit('send message',$name.val()+":      "+ $messageBox.val());
 				$messageBox.val('');
 			});
 			
