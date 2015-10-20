@@ -74,6 +74,18 @@
     <input type="text" class="form-control" id="message">
     <input type="submit">
 </form>-->
+    <script>
+    function validateForm() {
+    var x = document.forms["login"]["username"].value;
+    if (x == null || x == "") {
+        console.log("failed");
+    return false;
+    }
+    }
+    </script>
+
+
+
     
     <div class="panel panel-primary" style="height:90%">
         <div class="panel-heading">
@@ -104,12 +116,14 @@
                 <div class="modal-header">
                     <h4 class="modal-title">Log in</h4>
                 </div>
+                <form name="login">
                 <div class="modal-body">
-                   <center><input id="name" type="text" class="form-control input-sm" style="width:50%" placeholder="Enter Username" /></center>
+                        <center><input id="name" name="username" type="text" class="form-control input-sm" style="width:50%" placeholder="Enter Username" /></center>
                 </div>
                 <div class="modal-footer">
-                    <button type="button" class="btn btn-default" data-dismiss="modal">Enter</button>
+                    <button type="button" onclick="return validateForm()" class="btn btn-default" data-dismiss="modal">Enter</button>
                 </div>
+                    </form>
             </div>
 
         </div>
