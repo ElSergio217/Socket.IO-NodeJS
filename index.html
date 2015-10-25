@@ -1,163 +1,121 @@
 <html>
 <head>
-	<title>Chat with socket.io and node.js</title>
-	<style>
-        .chat
-{
-    list-style: none;
-    margin: 0;
-    padding: 0;
-}
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Chat with socket.io and node.js</title>
+    <style>
+        .chat {
+            list-style: none;
+            margin: 0;
+            padding: 0;
+        }
 
-.chat li
-{
-    margin-bottom: 10px;
-    padding-bottom: 5px;
-    border-bottom: 1px dotted #B3A9A9;
-}
+            .chat li {
+                margin-bottom: 10px;
+                padding-bottom: 5px;
+                border-bottom: 1px dotted #B3A9A9;
+            }
 
-.chat li.left .chat-body
-{
-    margin-left: 60px;
-}
+                .chat li.left .chat-body {
+                    margin-left: 60px;
+                }
 
-.chat li.right .chat-body
-{
-    margin-right: 60px;
-}
+                .chat li.right .chat-body {
+                    margin-right: 60px;
+                }
 
+                .chat li .chat-body p {
+                    margin: 0;
+                    color: #777777;
+                }
 
-.chat li .chat-body p
-{
-    margin: 0;
-    color: #777777;
-}
+            .panel .slidedown .glyphicon, .chat .glyphicon {
+                margin-right: 5px;
+            }
 
-.panel .slidedown .glyphicon, .chat .glyphicon
-{
-    margin-right: 5px;
-}
+        .panel-body {
+            overflow-y: auto;
+            height: 90%;
+        }
 
-.panel-body
-{
-    overflow-y: auto;
-    height:90%;
-}
+        ::-webkit-scrollbar-track {
+            -webkit-box-shadow: inset 0 0 6px rgba(0,0,0,0.3);
+            background-color: #F5F5F5;
+        }
 
-::-webkit-scrollbar-track
-{
-    -webkit-box-shadow: inset 0 0 6px rgba(0,0,0,0.3);
-    background-color: #F5F5F5;
-}
+        ::-webkit-scrollbar {
+            width: 0px;
+            background-color: #F5F5F5;
+        }
 
-::-webkit-scrollbar
-{
-    width: 0px;
-    background-color: #F5F5F5;
-}
-
-::-webkit-scrollbar-thumb
-{
-    -webkit-box-shadow: inset 0 0 6px rgba(0,0,0,.3);
-    background-color: #555;
-}
-
-
-	</style>
+        ::-webkit-scrollbar-thumb {
+            -webkit-box-shadow: inset 0 0 6px rgba(0,0,0,.3);
+            background-color: #555;
+        }
+    </style>
 
     <!-- Latest compiled and minified CSS -->
-<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/css/bootstrap.min.css">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/css/bootstrap.min.css">
 </head>
 <body>
-	<!--<h3 id="chat"></h3>
-<form id="send-message">
-    <input type="text" class="form-control" id="message">
-    <input type="submit">
-</form>-->
-    <script>
-    function validateForm() {
-    var x = document.forms["login"]["username"].value;
-    if (x == null || x == "") {
-        console.log("failed");
-    return false;
-    }
-    }
-    </script>
+    <!--<h3 id="chat"></h3>
+    <form id="send-message">
+        <input type="text" class="form-control" id="message">
+        <input type="submit">
+    </form>-->
 
 
-
-    
     <div class="panel panel-primary" style="height:90%">
         <div class="panel-heading">
             <span class="glyphicon glyphicon-comment"></span> Chat
+            <input id="name" name="username" type="text" class="form-control input-sm pull-right" style="width:25%" placeholder="Enter Username" />
         </div>
         <div id="chat" class="panel-body"></div>
     </div>
 
 
     <div id="wrap">
-  <div id="main" class="navbar navbar-fixed-bottom">
-      <div class="panel-footer">
-          <form id="send-message" class="input-group">
-              <input id="message" type="text" class="form-control input-sm" placeholder="Type your message here..." />
-              <span class="input-group-btn">
-                  <button class="btn btn-warning btn-sm" id="btn-chat" type="submit">Send</button>
-              </span>
-          </form>
-      </div>
-  </div>
-</div>
+        <div id="main" class="navbar navbar-fixed-bottom">
+            <div class="panel-footer">
+                <form id="send-message" class="input-group">
+                    <input id="message" type="text" class="form-control input-sm" placeholder="Type your message here..." />
+                    <span class="input-group-btn">
+                        <button class="btn btn-warning btn-sm" id="btn-chat" type="submit">Send</button>
+                    </span>
+                </form>
+            </div>
+        </div>
+    </div>
 
     <div id="myModal" class="modal fade" role="dialog">
         <div class="modal-dialog" style="width:95%">
 
-            <!-- Modal content-->
-            <div class="modal-content">
-                <div class="modal-header">
-                    <h4 class="modal-title">Log in</h4>
-                </div>
-                <form name="login">
-                <div class="modal-body">
-                        <center><input id="name" name="username" type="text" class="form-control input-sm" style="width:50%" placeholder="Enter Username" /></center>
-                </div>
-                <div class="modal-footer">
-                    <button type="button" onclick="return validateForm()" class="btn btn-default" data-dismiss="modal">Enter</button>
-                </div>
-                    </form>
-            </div>
 
         </div>
     </div>
 
-	<script src="http://code.jquery.com/jquery-latest.min.js"></script>
-	<script src="/socket.io/socket.io.js"></script>
-	<script>
+    <script src="http://code.jquery.com/jquery-latest.min.js"></script>
+    <script src="/socket.io/socket.io.js"></script>
+    <script>
 		jQuery(function($){
 			var socket = io.connect();
 			var $messageForm = $('#send-message');
 			var $messageBox = $('#message');
 			var $chat = $('#chat');
 			var $name = $('#name');
-			
+
 			$messageForm.submit(function(e){
 				e.preventDefault();
-				socket.emit('send message',$name.val()+":      "+ $messageBox.val());
+				socket.emit('send message',$name.val()+":      "+ $messageBox.val()+"<hr>");
 				$messageBox.val('');
 			});
-			
+
 			socket.on('new message', function(data){
-				$chat.append(data + "<h1/>");
-                   $("#chat").scrollTop($("#chat")[0].scrollHeight);
+			    $chat.append(data + "<h1/>");
+                $chat.scrollTop($chat[0].scrollHeight);
 			});
 });
-	</script>
+    </script>
     <!-- Latest compiled and minified JavaScript -->
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/js/bootstrap.min.js"></script>
-    <script type="text/javascript">
-    $(window).load(function(){
-        $('#myModal').modal('show');
-    });
-    </script>
-   
 </body>
 </html>

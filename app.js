@@ -6,11 +6,12 @@ var express = require('express'),
 server.listen(3000);
 
 app.get('/', function(req, res){
-	res.sendfile(__dirname + '/index.html');
+    res.sendfile(__dirname + '/index.html');
 });
 
 io.sockets.on('connection', function(socket){
 	socket.on('send message', function(data){
-		io.sockets.emit('new message', data);
+	    io.sockets.emit('new message', data);
+	    console.log("Connected");
 	});
 });
