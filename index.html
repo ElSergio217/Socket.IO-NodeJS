@@ -73,7 +73,7 @@
     </div>
 
 
-  <!-- <div id="wrap">
+  <!--<div id="wrap">
         <div id="main" class="navbar navbar-fixed-bottom">
             <div class="panel-footer">
                 <form id="send-message" class="input-group">
@@ -86,9 +86,28 @@
         </div>
     </div>-->
 
+    <!-- Modal -->
     <div id="myModal" class="modal fade" role="dialog">
-        <div class="modal-dialog" style="width:95%">
+        <div class="modal-dialog">
 
+            <!-- Modal content-->
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal">&times;</button>
+                    <h4 class="modal-title">Modal Header</h4>
+                </div>
+                <div class="modal-body">
+                    <form id="send-message" style="width:100%;" class="input-group">
+                        <input id="name" type="text" class="form-control input-sm" placeholder="Enter Name" />
+                        <hr>
+                        <textarea id="message" rows="5" type="text" class="form-control input-sm" placeholder="Type your message here..."></textarea>
+                        <hr>
+                        <div>
+                            <button class="btn btn-warning btn-sm pull-right" id="btn-chat" type="submit">Post</button>
+                        </div>
+                    </form>
+                </div>
+            </div>
 
         </div>
     </div>
@@ -102,10 +121,13 @@
 			var $messageBox = $('#message');
 			var $chat = $('#chat');
 			var $name = $('#name');
+			var Pull = "<h4 class='Pull-Right' style='color:#B2B2B2;font-size:15px'>";
+            var Width="<span style='width:100%'>"
 
-			$messageForm.submit(function(e){
+			$messageForm.submit(function (e) {
+			    $('#myModal').modal('hide');
 				e.preventDefault();
-				socket.emit('send message',$name.val()+":      "+ $messageBox.val()+"<hr>");
+				socket.emit('send message', Pull + $name.val()+"</h4>"+Width+ $messageBox.val()+ "</span>" +"<hr>");
 				$messageBox.val('');
 			});
 
